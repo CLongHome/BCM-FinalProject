@@ -7,6 +7,8 @@ from models import Generator, Discriminator
 from trainer import WGANTrainer
 from evaluator import Evaluator
 import warnings
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 warnings.filterwarnings('ignore')
 
@@ -19,6 +21,19 @@ def main():
     processor = DataProcessor()
     adata = processor.load_and_preprocess()
     adata_train, adata_test = processor.train_test_split()
+
+    # 計算細胞類型統計
+    cell_counts = adata.obs["condition"].value_counts()
+
+    # 長條圖顯示分布
+    plt.figure(figsize=(8, 6))
+    sns.barplot(x=cell_counts.index, y=cell_counts.values, palette="Set2")
+    plt.title("Cell Type Distribution in GSE81608")
+    plt.xlabel("Cell Type")
+    plt.ylabel("Number of Cells")
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+    plt.show()
 
     # 準備訓練數據
     X_train = adata_train.X.toarray() if hasattr(adata_train.X, "toarray") else adata_train.X
@@ -49,13 +64,12 @@ def main():
     # 降維可視化
     Evaluator.visualize_umap(X_test, generated_cells)
     Evaluator.visualize_tsne(X_test, generated_cells)
-    Evaluator.visualize_pca(X_test, generated_cells)
 
-    # 分類評估
+    # 分類評估（依據 T2D 標籤）
     X_train_original = X_train
-    y_train = adata_train.obs["cell.type"]
+    y_train = adata_train.obs["T2D_status"]  # ✅ 改為 condition
     X_test = X_test
-    y_test = adata_test.obs["cell.type"]
+    y_test = adata_test.obs["T2D_status"]  # ✅ 改為 condition
 
     print("\n=== Original Data Only ===")
     Evaluator.evaluate_classification(X_train_original, y_train, X_test, y_test)
