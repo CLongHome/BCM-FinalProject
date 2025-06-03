@@ -18,7 +18,7 @@ class WGANTrainer:
             TensorDataset(X_tensor),
             batch_size=TrainingConfig.batch_size,
             shuffle=True,
-            drop_last=True
+            drop_last=False
         )
 
         # 優化器

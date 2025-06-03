@@ -14,12 +14,12 @@ torch.backends.cudnn.benchmark = False
 # 訓練參數
 class TrainingConfig:
     noise_dim = 10
-    g_hidden = [256, 128]  # Generator隱藏層
+    g_hidden = [512, 256]  # Generator隱藏層
     d_hidden = [256, 128]  # Discriminator隱藏層
     batch_size = 32
-    lr = 1e-5
+    lr = 1e-4
     betas = (0.5, 0.9)
-    lambda_gp = 10
+    lambda_gp = 5
     d_iters_per_g = 5
     num_epochs = 100
 
