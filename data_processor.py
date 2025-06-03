@@ -1,3 +1,4 @@
+# data_processor.py
 import pandas as pd
 import scanpy as sc
 from sklearn.model_selection import train_test_split
@@ -22,6 +23,11 @@ class DataProcessor:
         # 建立AnnData
         self.adata = sc.AnnData(expr)
         sc.pp.log1p(self.adata)
+
+        # 高變基因篩選
+        sc.pp.highly_variable_genes(self.adata, min_mean=0.0125, max_mean=3, min_disp=0.5) # 參數可調
+        self.adata = self.adata[:, self.adata.var.highly_variable]
+        print(f"Filtered down to {self.adata.n_vars} highly variable genes.")
 
         # 處理metadata
         meta = pd.read_csv(PathConfig.metadata_path, sep="\t")

@@ -1,3 +1,4 @@
+# main.py
 import os
 import torch
 from config import PathConfig, TrainingConfig
@@ -66,7 +67,7 @@ def main():
     Evaluator.analyze_gene_expression(
         X_train_original,
         generated_cells,
-        gene_names=adata.var_names
+        gene_names=adata.var_names.to_numpy()
     )
 
 
