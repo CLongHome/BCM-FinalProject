@@ -63,6 +63,7 @@ def main():
     # 降維可視化
     Evaluator.visualize_umap(X_test, generated_cells)
     Evaluator.visualize_tsne(X_test, generated_cells)
+    Evaluator.visualize_pca(X_test, generated_cells)
 
     # 分類評估（依據 T2D 標籤）
     X_train_original = X_train

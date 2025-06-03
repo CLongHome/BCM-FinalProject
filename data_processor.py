@@ -8,7 +8,7 @@ class DataProcessor:
     def __init__(self):
         self.adata = None
 
-    def load_and_preprocess(self, top_var_ratio=0.2):
+    def load_and_preprocess(self, top_var_ratio=0.05):
         """載入並預處理數據，並挑選前 top_var_ratio 變異基因"""
         # 讀取表達矩陣與註解
         expr = pd.read_csv(PathConfig.expr_path, sep="\t")
